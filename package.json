@@ -1,0 +1,108 @@
+{
+  "name": "ai-testing-assistant",
+  "displayName": "AI Codebase-Aware Testing Assistant",
+  "description": "Codebase-aware AI test case generator, test runner, and Playwright assistant for VS Code.",
+  "version": "0.1.0",
+  "publisher": "ai-testing",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Testing",
+    "Programming Languages",
+    "Machine Learning"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "ai-testing-sidebar",
+          "title": "AI Testing",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "ai-testing-sidebar": [
+        {
+          "id": "aiTestingExplorer",
+          "name": "Testing Workspace Explorer"
+        },
+        {
+          "id": "aiTestingSuggestedCases",
+          "name": "AI Suggested Test Cases"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "aiTesting.scanProject",
+        "title": "AI Testing: Scan Project Structure",
+        "category": "AI Testing"
+      },
+      {
+        "command": "aiTesting.analyzeCurrentFile",
+        "title": "AI Testing: Analyze Current File",
+        "category": "AI Testing"
+      },
+      {
+        "command": "aiTesting.generateTestCases",
+        "title": "AI Testing: Generate Test Cases for Function",
+        "category": "AI Testing"
+      },
+      {
+        "command": "aiTesting.setApiKey",
+        "title": "AI Testing: Configure Gemini API Key",
+        "category": "AI Testing"
+      },
+      {
+        "command": "aiTesting.runTests",
+        "title": "AI Testing: Run Automated Tests",
+        "category": "AI Testing"
+      }
+    ],
+    "configuration": {
+      "title": "AI Testing Assistant",
+      "properties": {
+        "aiTesting.model": {
+          "type": "string",
+          "default": "gemini-3.8-flash",
+          "description": "Gemini model to use for test case generation and failure analysis."
+        },
+        "aiTesting.testFramework": {
+          "type": "string",
+          "enum": [
+            "playwright",
+            "vitest",
+            "jest"
+          ],
+          "default": "vitest",
+          "description": "Target test runner framework for test generation."
+        },
+        "aiTesting.testDirectory": {
+          "type": "string",
+          "default": "tests/ai-generated",
+          "description": "Target directory where generated test files are created."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.24",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "zod": "^3.22.4"
+  }
+}

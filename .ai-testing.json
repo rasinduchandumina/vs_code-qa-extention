@@ -1,0 +1,22 @@
+{
+  "language": "typescript",
+  "testFramework": "vitest",
+  "testDirectory": "tests/ai-generated",
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.js",
+    "src/**/*.jsx"
+  ],
+  "exclude": [
+    "node_modules/**",
+    ".git/**",
+    "dist/**",
+    "out/**",
+    ".env*",
+    "**/*.d.ts",
+    "tests/**",
+    "**/*.test.*",
+    "**/*.spec.*"
+  ]
+}
