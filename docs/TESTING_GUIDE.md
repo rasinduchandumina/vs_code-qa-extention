@@ -535,6 +535,39 @@ Verify that the scanner dynamically detects installed test frameworks from `pack
 
 ---
 
+### Test Suite 16: VSIX Packaging & Portable Installation Verification
+
+#### Objective:
+Verify that the extension can be compiled, bundled into a standalone `.vsix` installer, and installed cleanly into any VS Code instance without source dependencies.
+
+#### Steps:
+1. In the project root (`g:\vs_code-qa-extention`), run:
+   ```powershell
+   npm run package
+   ```
+2. Verify the generated output file `ai-testing-assistant-0.1.0.vsix`.
+3. To install in any local or remote VS Code instance:
+   ```bash
+   code --install-extension ai-testing-assistant-0.1.0.vsix
+   ```
+   *Or via VS Code UI: Extensions (`Ctrl+Shift+X`) -> `...` Menu -> "Install from VSIX..." -> Select file.*
+
+#### Expected Results & Output:
+- **Terminal Output**:
+  ```
+  > ai-testing-assistant@0.1.0 package
+  > npx @vscode/vsce package --allow-missing-repository
+
+  DONE Packaged: ...\ai-testing-assistant-0.1.0.vsix (608 files, 900.3 KB)
+  ```
+- **Exit Code**: `0`
+- **File Generated**: `ai-testing-assistant-0.1.0.vsix` created in workspace root with approximate size ~900 KB.
+- **Verification on Target PC**:
+  - The extension installs without needing Node.js or npm on the host machine.
+  - The **AI Testing** beaker icon appears on the left Activity Bar immediately.
+
+---
+
 ## 4. Windows Compatibility QA Checklist
 
 | Test Item | Verification Check | Status |
@@ -546,3 +579,5 @@ Verify that the scanner dynamically detects installed test frameworks from `pack
 | **Drive Letter Casing** | Canonical uppercase drive letter (`G:`) ensures Vitest module graph discovers test suites | **PASS** |
 | **File Permissions** | Windows file lock errors (`EPERM`, `EBUSY`) produce clean notifications | **PASS** |
 | **AI Prompt Backslashes** | Prompts use POSIX paths to avoid invalid JSON escapes | **PASS** |
+| **VSIX Standalone Packaging** | Packages into ~900KB `.vsix` without uncompiled source or cache | **PASS** |
+

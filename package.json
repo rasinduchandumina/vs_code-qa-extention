@@ -166,7 +166,8 @@
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "package": "npx @vscode/vsce package --allow-missing-repository"
   },
   "devDependencies": {
     "@types/node": "^20.11.24",

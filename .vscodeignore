@@ -1,0 +1,9 @@
+.vscode/**
+src/**
+docs/**
+examples/**
+.git/**
+.gitignore
+tsconfig.json
+**/*.map
+.ai-testing.json

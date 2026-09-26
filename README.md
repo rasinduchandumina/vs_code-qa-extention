@@ -313,6 +313,46 @@ The project is fully engineered and tested to work seamlessly on **Windows 10/11
 
 ---
 
+## 📦 How to Export & Install on Another PC (1-Click VSIX Installation)
+
+You can package this entire extension into a single **`.vsix`** installer file and install it on any other computer (Windows, macOS, or Linux) with a single click — **no Node.js, npm, or Git required on the target PC!**
+
+### Step 1: Export / Build the `.vsix` Package
+Run the packaging command from the project root:
+```powershell
+npm run package
+```
+- **Output**: Generates `ai-testing-assistant-0.1.0.vsix` (~900 KB) in the root directory.
+- This single `.vsix` file contains the pre-compiled JavaScript bundle, media icons, and runtime dependencies.
+
+### Step 2: Transfer to Another PC
+Transfer `ai-testing-assistant-0.1.0.vsix` to the other computer using a USB drive, Google Drive, email, Slack, or GitHub Release.
+
+### Step 3: Install in VS Code on the Other PC
+
+#### Option A: Using the VS Code User Interface (Recommended)
+1. Open **VS Code** on the target PC.
+2. Open the **Extensions view** by pressing `Ctrl+Shift+X` (or `Cmd+Shift+X` on macOS), or click the Extensions icon in the left Activity Bar.
+3. Click the **`...`** (Views and More Actions) menu button at the top-right corner of the Extensions sidebar.
+4. Select **`Install from VSIX...`**.
+5. Browse to and select `ai-testing-assistant-0.1.0.vsix`.
+6. **Result**: VS Code installs the extension immediately. The **AI Testing** beaker icon appears on the left Activity Bar ready to use!
+
+#### Option B: Using the Command Line
+Open a terminal (PowerShell, Command Prompt, or Bash) on the target PC and run:
+```bash
+code --install-extension ai-testing-assistant-0.1.0.vsix
+```
+
+#### Option C: Manual Directory Copy (No VSIX required)
+Copy the entire extension folder directly into the VS Code extensions folder:
+- **Windows**: `%USERPROFILE%\.vscode\extensions\ai-testing-assistant`
+- **macOS**: `~/.vscode/extensions/ai-testing-assistant`
+- **Linux**: `~/.vscode/extensions/ai-testing-assistant`
+Restart VS Code and the extension is instantly available!
+
+---
+
 ### Testing End-to-End with Sample App
 
 A ready-to-test sample project is included in [`examples/sample-app`](file:///g:/vs_code-qa-extention/examples/sample-app).
