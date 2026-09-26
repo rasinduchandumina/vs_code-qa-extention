@@ -5,6 +5,7 @@
     "test": "vitest run"
   },
   "devDependencies": {
+    "typescript": "^7.0.2",
     "vitest": "^1.2.0"
   }
 }

@@ -63,6 +63,36 @@
         "command": "aiTesting.runTests",
         "title": "AI Testing: Run Automated Tests",
         "category": "AI Testing"
+      },
+      {
+        "command": "aiTesting.selectModel",
+        "title": "AI Testing: Switch Gemini Model",
+        "category": "AI Testing"
+      },
+      {
+        "command": "aiTesting.analyzeImpact",
+        "title": "AI Testing: Analyze Changed Code Impact",
+        "category": "AI Testing"
+      },
+      {
+        "command": "aiTesting.runImpactedTests",
+        "title": "AI Testing: Run Impacted Tests Only",
+        "category": "AI Testing"
+      },
+      {
+        "command": "aiTesting.generateTraceabilityMatrix",
+        "title": "AI Testing: Generate Traceability Matrix",
+        "category": "AI Testing"
+      },
+      {
+        "command": "aiTesting.exportDefectReport",
+        "title": "AI Testing: Export Defect Report",
+        "category": "AI Testing"
+      },
+      {
+        "command": "aiTesting.repairFailingTest",
+        "title": "AI Testing: Auto-Repair Failing Test",
+        "category": "AI Testing"
       }
     ],
     "configuration": {
@@ -71,6 +101,14 @@
         "aiTesting.model": {
           "type": "string",
           "default": "gemini-3.8-flash",
+          "enum": [
+            "gemini-3.8-flash",
+            "gemini-3.5-flash-lite",
+            "gemini-3.7-flash",
+            "gemini-2.5-flash",
+            "gemini-2.0-flash",
+            "gemini-1.5-flash"
+          ],
           "description": "Gemini model to use for test case generation and failure analysis."
         },
         "aiTesting.testFramework": {
