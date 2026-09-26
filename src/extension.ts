@@ -296,9 +296,14 @@ export function activate(context: vscode.ExtensionContext) {
   });
 
   // Command: Toggle Approval of a Test Case
-  const toggleApprovalCmd = vscode.commands.registerCommand("aiTesting.toggleApproval", (item: TestTreeItem) => {
-    if (item && item.data.kind === "testCase") {
+  const toggleApprovalCmd = vscode.commands.registerCommand("aiTesting.toggleApproval", (item?: any) => {
+    if (!item) return;
+    if (typeof item === "string") {
+      suggestedCasesTreeProvider.toggleApproval(item);
+    } else if (item.data && item.data.kind === "testCase") {
       suggestedCasesTreeProvider.toggleApproval(item.data.testCase.id);
+    } else if (item.testCase && item.testCase.id) {
+      suggestedCasesTreeProvider.toggleApproval(item.testCase.id);
     }
   });
 

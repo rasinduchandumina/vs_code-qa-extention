@@ -76,6 +76,11 @@ export class TestTreeItem extends vscode.TreeItem {
         this.description = `${reqTag}[${data.testCase.type.toUpperCase()}] Priority: ${data.testCase.priority}`;
         this.tooltip = `${data.testCase.description}\n\nInputs: ${data.testCase.inputConditions}\nExpected: ${data.testCase.expectedResult}`;
         this.contextValue = "aiTestCase";
+        this.command = {
+          command: "aiTesting.toggleApproval",
+          title: "Toggle Approval",
+          arguments: [this]
+        };
         break;
       }
 

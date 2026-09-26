@@ -93,6 +93,18 @@
         "command": "aiTesting.repairFailingTest",
         "title": "AI Testing: Auto-Repair Failing Test",
         "category": "AI Testing"
+      },
+      {
+        "command": "aiTesting.toggleApproval",
+        "title": "AI Testing: Toggle Test Case Approval",
+        "category": "AI Testing",
+        "icon": "$(check)"
+      },
+      {
+        "command": "aiTesting.approveAndGenerateCode",
+        "title": "AI Testing: Approve & Generate Test Code",
+        "category": "AI Testing",
+        "icon": "$(check-all)"
       }
     ],
     "configuration": {
@@ -127,6 +139,27 @@
           "description": "Target directory where generated test files are created."
         }
       }
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "aiTesting.approveAndGenerateCode",
+          "when": "view == aiTestingSuggestedCases",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "aiTesting.toggleApproval",
+          "when": "view == aiTestingSuggestedCases && viewItem == aiTestCase",
+          "group": "inline"
+        },
+        {
+          "command": "aiTesting.generateTestCases",
+          "when": "view == aiTestingExplorer && viewItem == discoveredFunction",
+          "group": "inline"
+        }
+      ]
     }
   },
   "scripts": {

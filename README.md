@@ -34,24 +34,30 @@ An intelligent, codebase-aware Visual Studio Code extension that analyzes your p
 
 ---
 
-## 🌟 Key Features
+## 🌟 MoSCoW Feature Compliance Matrix
 
-- **TypeScript AST-Driven Code Scanner**: Performs AST traversal using the TypeScript Compiler API (`ts.createSourceFile`) to discover exported functions, arrow functions, and class methods along with parameter signatures and return types.
-- **Framework Detection**: Inspects project configuration (`package.json`) to detect installed web frameworks (Next.js, React, Express, NestJS, Vue) and testing runners (Vitest, Playwright, Jest).
-- **Changed-Code Impact Analysis**: Inspects git status to map modified files to discovered functions and identifies impacted test suites.
-- **Automatic Test Selection**: Execute *only* the test suites covering modified code, accelerating feedback loops.
-- **Interactive UI Tree Views**: Displays discovered source files, functions, existing test files, and generated test scenarios directly inside the VS Code Activity Bar sidebar.
-- **Test Quality Scoring**: Awards a 0–100 quality score and letter grade (`A+`, `A`, `B`, `C`) evaluating scenario diversity, edge case coverage, and assertion clarity.
-- **Requirement Traceability Matrix**: Automatically links requirements (`REQ-001`) to functions and generates `docs/TRACEABILITY_MATRIX.md`.
-- **Secure Credential Storage**: Uses VS Code's native `SecretStorage` API (`context.secrets`) to securely store and retrieve Gemini API keys without saving secrets to disk or config files.
-- **Structured Test Case Generation**: Produces categorized test scenarios (`positive`, `negative`, `edge`, `security`) with inputs, expected results, and priority levels validated via Zod schemas.
-- **Selective Approval Workflow**: Review, approve, or toggle individual test cases in the sidebar before generating actual test code.
-- **Automated Test Code Synthesis**: Generates ready-to-execute test files using modern framework syntax (Vitest, Playwright, Jest) and writes them into `tests/ai-generated/`.
-- **Integrated Test Execution**: Runs tests directly from VS Code via child process execution, streaming output to a dedicated Output Channel and parsing pass/fail metrics.
-- **Better Failure Classification**: Classifies failures into `AssertionError`, `TimeoutError`, `TypeError`, `ReferenceError`, and `CompilationError`.
-- **AI Root Cause Failure Diagnostics**: In the event of test failures, analyzes the stack trace and source code, producing an interactive Webview with root cause hypotheses, line numbers, and actionable remediation steps.
-- **🐛 1-Click Defect Report Export**: Exports standardized bug reports (`defects/BUG-XXXXXX.md`) ready for GitHub Issues or Jira.
-- **✨ Self-Healing Test Auto-Repair**: Automated repair of failing tests, updating assertions and mocks to match implementation with one click.
+| Tier | Feature | Status | Implementation Details |
+|---|---|:---:|---|
+| **Core (MUST HAVE)** | VS Code Extension | ✅ **Complete** | Full VS Code Activity Bar integration, tree views, output channel, and command palette |
+| **Core (MUST HAVE)** | Codebase Scanner | ✅ **Complete** | Project-wide source and test file discovery via `WorkspaceScanner` |
+| **Core (MUST HAVE)** | TypeScript/JavaScript Analysis | ✅ **Complete** | Deep AST traversal via TypeScript Compiler API (`ts.createSourceFile`) |
+| **Core (MUST HAVE)** | AI Context Builder | ✅ **Complete** | Extracts function snippets, parameter signatures, and framework context |
+| **Core (MUST HAVE)** | AI Test-Case Generation | ✅ **Complete** | Positive, negative, edge, and security scenarios with strict Zod validation |
+| **Core (MUST HAVE)** | Human Review / Edit | ✅ **Complete** | Interactive sidebar tree with click-to-toggle approval and rich tooltips |
+| **Core (MUST HAVE)** | Test-Code Generation | ✅ **Complete** | Framework-aware test code synthesis written to `tests/ai-generated/` |
+| **Core (MUST HAVE)** | Runner Execution | ✅ **Complete** | Child process execution supporting Vitest, Playwright, and Jest |
+| **Core (MUST HAVE)** | Test-Result Collection | ✅ **Complete** | Real-time output streaming, regex pass/fail parsing, and status reporting |
+| **Core (MUST HAVE)** | AI Failure Analysis | ✅ **Complete** | Interactive Webview with root cause hypotheses, file/line mapping, and suggested fixes |
+| **Core (MUST HAVE)** | Basic Defect Creation | ✅ **Complete** | 1-click export of standardized defect reports (`defects/BUG-XXXXXX.md`) |
+| **Core (MUST HAVE)** | Traceability | ✅ **Complete** | Requirement ID tagging (`[REQ-001]`) and traceability links across tests |
+| **Advanced (SHOULD HAVE)** | Existing-Test Analysis | ✅ **Complete** | Discovers existing test files and maps imported symbols to source code |
+| **Advanced (SHOULD HAVE)** | Changed-Code Impact Analysis | ✅ **Complete** | Git status analysis mapping modified files to impacted test suites with `$(flame)` badge |
+| **Advanced (SHOULD HAVE)** | Automatic Test Selection | ✅ **Complete** | `Run Impacted Tests Only` command executing only affected test suites |
+| **Advanced (SHOULD HAVE)** | Better Failure Classification | ✅ **Complete** | Rule engine classifying `AssertionError`, `TimeoutError`, `TypeError`, `CompilationError`, etc. |
+| **Advanced (SHOULD HAVE)** | Test Quality Scoring | ✅ **Complete** | 0–100 quality scoring with letter grades (`A+`, `A`, `B`, `C`) based on scenario diversity |
+| **Advanced (SHOULD HAVE)** | Requirement Traceability Matrix | ✅ **Complete** | Auto-generates `docs/TRACEABILITY_MATRIX.md` with complete coverage auditing |
+| **Experimental (COULD HAVE)** | Self-Healing Test Auto-Repair | ✅ **Complete** | 1-click AI patching of outdated test assertions and automatic file rewrites |
+| **Experimental (COULD HAVE)** | Resilient Model Cascade | ✅ **Complete** | Exponential backoff retry and automatic candidate fallback cascade on 503/429 errors |
 
 ---
 
@@ -316,54 +322,98 @@ In the `[Extension Development Host]` window:
 - Click **File > Open Folder...** and select `g:\vs_code-qa-extention\examples\sample-app`.
 
 #### Step 2: Open AI Testing Sidebar
-- Click the **AI Testing** icon on the Activity Bar (left navigation rail).
-- You will see two panels: **Testing Workspace Explorer** and **AI Suggested Test Cases**.
+- Click the **AI Testing** beaker icon on the Activity Bar.
+- **Expected Result**: Two panels are displayed: **Testing Workspace Explorer** and **AI Suggested Test Cases**.
 
-#### Step 3: Configure Gemini API Key
+#### Step 3: Configure Gemini API Key & Model
 - Press `Ctrl+Shift+P` (or `Cmd+Shift+P` on macOS) to open the Command Palette.
-- Run: `AI Testing: Configure Gemini API Key`.
-- Paste your Gemini API key. VS Code securely stores this in your OS keychain.
+- Run: `AI Testing: Configure Gemini API Key` and paste your key.
+- Run: `AI Testing: Switch Gemini Model` and select `gemini-3.5-flash-lite`.
+- **Expected Notification**: `Gemini API Key configured successfully.`
 
 #### Step 4: Scan Project Codebase
-- In the sidebar, click the scan icon or run from Command Palette: `AI Testing: Scan Project Structure`.
-- The notification will display:
-  `Scanned 2 source files. Found 3 functions and 1 existing tests.`
-- Expand **Scanned Source Files**:
-  - `src/cart.ts` (contains `calculateTotal`, `applyDiscount`)
-  - `src/auth.ts` (contains `loginUser`)
-- Click on `calculateTotal` — VS Code will open `src/cart.ts` directly at line 17!
+- In the sidebar, click the scan icon or run: `AI Testing: Scan Project Structure`.
+- **Expected Notification**: `Scanned 2 source files. Found 3 functions and 1 existing tests.`
+- **Expected Sidebar Tree**:
+  - `Project (Standard TS/JS) • Test Runner: vitest`
+  - `Scanned Source Files (2)`:
+    - `src/cart.ts` (`calculateTotal`, `applyDiscount`)
+    - `src/auth.ts` (`loginUser`)
+  - `Existing Tests (1)`:
+    - `tests/cart.test.ts`
+- **Navigation Result**: Click `calculateTotal` to instantly navigate to line 17 of `src/cart.ts`.
 
-#### Step 5: Generate Test Cases for Function
-- Right-click or select `calculateTotal` and click **Generate Test Cases for Function** (or run `AI Testing: Generate Test Cases for Function`).
-- The AI generates scenarios under **AI Suggested Test Cases**:
-  - Positive tests (e.g. standard items with default tax).
-  - Negative tests (e.g. invalid negative price or quantity).
-  - Edge cases (e.g. empty cart array).
-  - Security / Boundary tests (e.g. zero tax rate, precision limits).
+#### Step 5: Generate Test Cases & Review Quality Score
+- In the explorer tree, right-click `calculateTotal` and click **Generate Test Cases for Function** (or run `AI Testing: Generate Test Cases for Function`).
+- **Expected Notification**: `Generated 5 test scenarios for "calculateTotal" [Quality: 95/100]. Review and approve them in the sidebar.`
+- **Expected Result in Suggested Cases View**:
+  - Header: `Function: calculateTotal • Quality: 95/100 (A+)`
+  - `[REQ-001] [POSITIVE] Priority: high` - *Standard items with default tax*
+  - `[REQ-002] [EDGE] Priority: medium` - *Empty cart array returns 0*
+  - `[REQ-003] [NEGATIVE] Priority: high` - *Negative item price throws validation error*
+  - `[REQ-004] [NEGATIVE] Priority: high` - *Negative item quantity throws error*
+  - `[REQ-005] [SECURITY] Priority: low` - *Custom tax rate precision check*
+- Click individual test case items to toggle approval between unapproved (`circle-large-outline`) and approved (`pass-filled`).
 
 #### Step 6: Approve Scenarios & Generate Test Code
-- Click individual test case items in the sidebar to toggle approval (the icon switches from outline circle to filled checkmark).
-- In the title menu of **AI Suggested Test Cases**, click the checkmark button or run command: `AI Testing: Approve & Generate Test Code`.
-- The extension contacts Gemini, synthesizes the complete test file, writes it to:
-  `tests/ai-generated/calculateTotal.test.ts`
-  and opens the generated test file in your editor!
+- Click the checkmark icon in the **AI Suggested Test Cases** toolbar (or run `AI Testing: Approve & Generate Test Code`).
+- **Expected Notification**: `Generated test file saved to: tests/ai-generated/calculateTotal.test.ts`
+- **Expected Result**: File `tests/ai-generated/calculateTotal.test.ts` is created and opened in an editor tab.
 
 #### Step 7: Run Automated Tests
 - Run `AI Testing: Run Automated Tests` from the Command Palette or click the Play icon in the sidebar.
-- The **AI Testing Assistant** output channel will open, showing live execution logs from Vitest.
-- Notification: `All X tests passed successfully!`.
+- **Expected Notification**: `All 2 tests passed successfully!`
+- **Expected Output Channel Log**:
+  ```
+  [AI Testing Assistant] Executing: npx.cmd vitest run
+  [AI Testing Assistant] Working directory: G:\vs_code-qa-extention\examples\sample-app
 
-#### Step 8: Test AI Root Cause Failure Diagnostics
-- Open `examples/sample-app/src/cart.ts` and deliberately break a calculation (e.g. change `return Number((subtotal + tax).toFixed(2));` to `return 999;`).
-- Run `AI Testing: Run Automated Tests`.
-- A failure dialog appears: `Tests failed (1 failures). Would you like AI Failure Analysis?`.
+   RUN  v1.6.1 G:/vs_code-qa-extention/examples/sample-app
+
+   ✓ tests/cart.test.ts (1 test) 3ms
+   ✓ tests/ai-generated/calculateTotal.test.ts (3 tests) 4ms
+
+   Test Files  2 passed (2)
+        Tests  4 passed (4)
+  Status: ALL TESTS PASSED (4 passed, 0 failed)
+  ```
+
+#### Step 8: Changed-Code Impact Analysis & Selective Execution
+- In `src/cart.ts`, add a comment or change a variable and save.
+- Run: `AI Testing: Analyze Changed Code Impact`.
+- **Expected Notification**: `Impact Analysis: 1 modified file(s), 2 function(s), and 2 impacted test suite(s).`
+- **Expected Sidebar Result**: An **Impacted Tests (2)** section appears with flame icon `$(flame)` listing `tests/cart.test.ts` and `tests/ai-generated/calculateTotal.test.ts`.
+- Run: `AI Testing: Run Impacted Tests Only`.
+- **Expected Result**: Only the 2 impacted test suites are executed, bypassing all unrelated tests.
+
+#### Step 9: AI Failure Diagnostics & Root-Cause Webview
+- Open `src/cart.ts` and modify line 30 to return `-999`.
+- Run: `AI Testing: Run Automated Tests`.
+- **Expected Dialog**: `Tests failed (2 failures) [AssertionError]. Would you like AI Failure Analysis?`
 - Click **Analyze Failure**.
-- An interactive Webview opens beside your code showing:
-  - **Likely Root Cause**
-  - **Relevant File & Line Number**
-  - **Confidence Level**
-  - **Suggested Fix / Action**
-  - **Extracted Stack Trace Evidence**
+- **Expected Webview Result**: A dedicated diagnostic panel opens showing:
+  - Category Badge: `AssertionError`
+  - Root Cause: `Function calculateTotal returned -999 instead of expected positive subtotal and tax calculation.`
+  - Responsible File: `src/cart.ts (Line 30)`
+  - Evidence: `expected 27, received -999`
+  - Action Buttons: `[✨ Auto-Repair Test with AI]` and `[🐛 Export Defect Report (.md)]`
+
+#### Step 10: 1-Click Defect Report Export (.md)
+- Click **Export Defect Report (.md)** in the Webview (or run `AI Testing: Export Defect Report`).
+- **Expected Notification**: `Defect Report exported successfully to: defects/BUG-XXXXXX.md`
+- **Expected Result**: Formatted bug report `defects/BUG-XXXXXX.md` is generated with severity, stack trace, and suggested fix, and opened in the editor.
+
+#### Step 11: Self-Healing Test Auto-Repair
+- Deliberately introduce an outdated expectation in `tests/cart.test.ts` (e.g. `expect(calculateTotal(items)).toBe(9999);`).
+- Run `AI Testing: Run Automated Tests`.
+- On failure, click **Auto-Repair Test** (or run `AI Testing: Auto-Repair Failing Test`).
+- **Expected Notification**: `✨ Test repaired! Updated expected total calculation assertion from 9999 to 27. Run automated tests to verify.`
+- **Expected Result**: File `tests/cart.test.ts` is patched automatically and passes on re-run.
+
+#### Step 12: Generate Requirement Traceability Matrix
+- Open Command Palette and run: `AI Testing: Generate Traceability Matrix`.
+- **Expected Notification**: `Traceability Matrix generated and saved to docs/TRACEABILITY_MATRIX.md`
+- **Expected Result**: File `docs/TRACEABILITY_MATRIX.md` is generated with full Requirement ID -> Function -> Test Coverage table and opened in the editor.
 
 ---
 
