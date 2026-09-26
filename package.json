@@ -171,10 +171,10 @@
   },
   "devDependencies": {
     "@types/node": "^20.11.24",
-    "@types/vscode": "^1.85.0",
-    "typescript": "^5.3.3"
+    "@types/vscode": "^1.85.0"
   },
   "dependencies": {
+    "typescript": "^5.3.3",
     "zod": "^3.22.4"
   }
 }
